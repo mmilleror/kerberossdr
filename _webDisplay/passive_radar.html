@@ -1,0 +1,35 @@
+<html>
+<head>
+<script type="text/JavaScript">
+var url = "pr.jpg"; //url to load image from
+var refreshInterval = 500; //in ms
+var drawDate = true; //draw date string
+var img;
+
+function init() {
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    img = new Image();
+    img.onload = function() {
+        canvas.setAttribute("width", img.width)
+        canvas.setAttribute("height", img.height)
+        context.translate(0, img.height);
+        context.scale(1,-1);
+        context.drawImage(this, 0, 0);
+    };
+    refresh();
+}
+function refresh()
+{
+    img.src = url + "?t=" + new Date().getTime();
+    setTimeout("refresh()",refreshInterval);
+}
+
+</script>
+<title>KerberosSDR Passive Radar</title>
+</head>
+
+<body onload="JavaScript:init();">
+<canvas id="canvas"/>
+</body>
+</html>

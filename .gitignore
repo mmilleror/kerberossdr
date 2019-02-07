@@ -1,0 +1,14 @@
+build/
+log_*
+*.so
+*.o
+gate_control_fifo
+rec_control_fifo
+sync_control_fifo
+gate
+rtl_daq
+rtl_sdr_join
+sim
+sync
+__pycache__
+*.save
