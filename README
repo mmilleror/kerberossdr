@@ -46,9 +46,10 @@ Test 4x Tuners
 At this stage we recommend first testing your four tuners with rtl_test. Open four terminal windows, or tabs, and in each window run "rtl_test -d 0", "rtl_test -d 1", "rtl_test -d 2" and "rtl_test -d 3". Ensure that each unit connects and displays no errors.
 Install KerberosSDR Demo Software
 
-First unzip or clone the software (KerberosSDR GIT download link to be added in future once publicly released in mid January).
+First unzip or clone the software
 
-cd DSP/_receiver/C
+git clone https://github.com/rtlsdrblog/kerberossdr
+cd kerberossdr/_receiver/C
 make clean
 make
 cd ../..
