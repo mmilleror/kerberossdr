@@ -1,0 +1,63 @@
+KerberosSDR Demo Software
+
+Installing the software
+Install Dependencies via apt:
+
+sudo apt update
+sudo apt install python3-pip python3-pyqt4 build-essential gfortran libatlas3-base libatlas-base-dev python3-dev python3-setuptools libffi6 libffi-dev python3-tk pkg-config libfreetype6-dev php7.2-cli
+
+Uninstall any preinstalled numpy packages as we want to install with pip3 to get optimized BLAS.
+
+sudo apt remove python3-numpy
+Install Dependencies via pip3:
+
+sudo pip3 install numpy
+sudo pip3 install matplotlib
+sudo pip3 install scipy
+sudo pip3 install cairocffi
+sudo pip3 install pyapril
+sudo pip3 install pyargus
+sudo pip3 install pyqtgraph
+sudo pip3 install peakutils 
+sudo pip3 install bottle
+
+Install RTL-SDR-Kerberos Drivers
+
+Our Kerberos RTL-SDR driver branch contains code for slightly modified Osmocom RTL-SDR drivers that enable GPIO, disable dithering, and disable zerocopy buffers which seems to cause trouble on some ARM devices.
+
+sudo apt-get install libusb-1.0-0-dev git cmake 
+
+git clone https://github.com/rtlsdrblog/rtl-sdr-kerberos
+
+cd rtl-sdr-kerberos
+mkdir build
+cd build
+cmake ../ -DINSTALL_UDEV_RULES=ON
+make
+sudo make install
+sudo cp ../rtl-sdr.rules /etc/udev/rules.d/
+sudo ldconfig
+
+echo 'blacklist dvb_usb_rtl28xxu' | sudo tee --append /etc/modprobe.d/blacklist-dvb_usb_rtl28xxu.conf
+
+Now reboot the Pi.
+Test 4x Tuners
+
+At this stage we recommend first testing your four tuners with rtl_test. Open four terminal windows, or tabs, and in each window run "rtl_test -d 0", "rtl_test -d 1", "rtl_test -d 2" and "rtl_test -d 3". Ensure that each unit connects and displays no errors.
+Install KerberosSDR Demo Software
+
+First unzip or clone the software (KerberosSDR GIT download link to be added in future once publicly released in mid January).
+
+cd DSP/_receiver/C
+make clean
+make
+cd ../..
+sh setup_init.sh
+sudo chmod +x run.sh kill.sh
+
+Now you can run the software by typing
+
+./run.sh
+
+
+Full software tutorial at www.rtl-sdr.com/ksdr
