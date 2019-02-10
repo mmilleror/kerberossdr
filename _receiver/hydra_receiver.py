@@ -87,7 +87,7 @@ class ReceiverRTLSDR():
             
             # Data acquisition parameters
             self.channel_number = 4
-            self.block_size = 128 * 1024 #256*1024
+            self.block_size = 0; #128 * 1024 #256*1024
                         
             self.overdrive_detect_flag = False
 

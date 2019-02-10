@@ -51,7 +51,7 @@ gcc -std=c99 rtl_rec.h rtl_daq.c -lpthread -lrtlsdr -o rtl_daq
 
 #define NUM_CH 4  // Number of receiver channels
 #define NUM_BUFF 2 // Number of buffers
-#define BUFF_LEN (8*16384) //(16 * 16384)
+//#define BUFF_LEN (8*16384) //(16 * 16384)
 #define SAMPLE_RATE 2000000
 #define CENTER_FREQ 107200000
 #define GAIN 5
@@ -62,6 +62,8 @@ gcc -std=c99 rtl_rec.h rtl_daq.c -lpthread -lrtlsdr -o rtl_daq
 
 #define DEFAULT_RATE         2000000
 #define DEFAULT_FREQ         107200000
+
+int BUFF_LEN = 0;
 
 struct rtl_rec_struct* rtl_receivers;
 pthread_mutex_t buff_ind_mutex;
@@ -74,7 +76,6 @@ int noise_source_state = 0;
 int last_noise_source_state = 0;
 
 unsigned long long read_buff_ind = 0;
-
 
 int writeOrder[100][2];
 int writeCount = 0;
@@ -260,6 +261,8 @@ return NULL;
 int main( int argc, char** argv )
 {
     fprintf(stderr, "[ INFO ] Starting multichannel coherent RTL-SDR receiver\n");
+
+    BUFF_LEN = (atoi(argv[1])/16) * 16384;
 
     // Allocation
     rtl_receivers = malloc(sizeof(struct rtl_rec_struct)*NUM_CH);

@@ -251,6 +251,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         # Instantiate and configura Hydra modules                              
         self.module_receiver = ReceiverRTLSDR()        
+
+        self.module_receiver.block_size = int(sys.argv[1]) * 1024
+
         self.module_signal_processor = SignalProcessor(module_receiver=self.module_receiver)        
         self.module_signal_processor.signal_overdrive.connect(self.power_level_update)
         self.module_signal_processor.signal_period.connect(self.period_time_update)
