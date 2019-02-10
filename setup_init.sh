@@ -1,5 +1,8 @@
 #/bin/bash!
 
+echo "Compile C files"
+(cd _receiver/C && make)
+
 echo "[ INFO ] Set file executation rights"
 chmod a+x _receiver/C/rtl_daq
 chmod a+x _receiver/C/sim
@@ -19,4 +22,3 @@ sudo ln -s /ram/doa.jpg static/doa.jpg
 sudo ln -s /ram/pr.jpg static/pr.jpg
 sudo ln -s /ram/DOA_value.html static/DOA_value.html
 
-(cd _receiver/C && make)
