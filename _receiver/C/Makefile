@@ -3,7 +3,7 @@
 # Date: August 2018
 # Author: Tamás Pető
 CC=gcc
-CFLAGS=-Wall -march=native -O3
+CFLAGS=-Wall -march=native
 RM= rm -f
 
 all: rtl_daq sync gate sim
