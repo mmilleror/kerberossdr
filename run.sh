@@ -28,7 +28,7 @@ mkfifo _receiver/C/rec_control_fifo
 
 #nice -n -20 ./_receiver/C/rtl_daq 2>log_err_rtl_daq 1| ./_receiver/C/sync 2>log_err_sync 1| ./_receiver/C/gate 2> log_err_gate 1| python3 _GUI/hydra_main_window.py > log_dsp&
 curr_user=$(whoami)
-sudo chrt -r 51 ./_receiver/C/rtl_daq $BUFF_SIZE 2>log_err_rtl_daq 1| sudo chrt -r 50 ./_receiver/C/sync $BUFF_SIZE 2>log_err_sync 1| sudo chrt -r 50 ./_receiver/C/gate $BUFF_SIZE 2> log_err_gate 1| python3 _GUI/hydra_main_window.py $BUFF_SIZE&
+sudo chrt -r 50 ./_receiver/C/rtl_daq $BUFF_SIZE 2>log_err_rtl_daq 1| sudo chrt -r 50 ./_receiver/C/sync $BUFF_SIZE 2>log_err_sync 1| sudo chrt -r 50 ./_receiver/C/gate $BUFF_SIZE 2> log_err_gate 1| sudo nice -n -20 sudo -u $curr_user python3 _GUI/hydra_main_window.py $BUFF_SIZE&
 #sudo chrt -r 51 ./_receiver/C/rtl_daq 2>log_err_rtl_daq 1| sudo chrt -r 50 ./_receiver/C/sync 2>log_err_sync 1| sudo chrt -r 50 ./_receiver/C/gate 2> log_err_gate 1| sudo nice -n -20 sudo -u $curr_user python3 _GUI/hydra_main_window.py&
 
 #sudo php -S 192.168.4.1:80 -t _webDisplay >&- 2>&-
