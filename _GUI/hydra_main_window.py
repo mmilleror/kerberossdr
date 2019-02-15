@@ -279,8 +279,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         # Set default confiuration for the GUI components
         self.set_default_configuration()
-        
-        threading.Thread(target=run, kwargs=dict(host='192.168.1.132', port=8080, quiet=True, debug=True)).start()
+
+        ip_addr = sys.argv[2]
+        threading.Thread(target=run, kwargs=dict(host=ip_addr, port=8080, quiet=True, debug=True)).start()
 
     #-----------------------------------------------------------------
     # 
