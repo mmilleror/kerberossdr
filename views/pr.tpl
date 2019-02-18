@@ -29,7 +29,7 @@
 
 	<p>Dynamic Range <input type="number" value="{{dyn_range}}" step="1" name="dyn_range"/></p>
 
-	<b>Automatic Detection (CA-CFAR)</b>
+	<p><b>Automatic Detection (CA-CFAR)</b></p>
 	<input type="checkbox" name="en_det" value="on" {{!'checked="checked"' if en_det >= 1 else ""}}>Enable/Disable<br>
 
 	<p>Estimation Window <input type="number" value="{{est_win}}" step="1" name="est_win"/></p>
