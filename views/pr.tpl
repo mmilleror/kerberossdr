@@ -23,8 +23,8 @@
 
         <p>Windowing:
         <select name = "windowing_mode">
-                <option value="0" {{!'selected="selected"' if windowing_mode == 0 else ""}}>Rectangular</op$
-                <option value="1" {{!'selected="selected"' if windowing_mode == 1 else ""}}>Hamming</op$
+                <option value="0" {{!'selected="selected"' if windowing_mode == 0 else ""}}>Rectangular</option>
+                <option value="1" {{!'selected="selected"' if windowing_mode == 1 else ""}}>Hamming</option>
         </select></p>
 
 	<p>Dynamic Range <input type="number" value="{{dyn_range}}" step="1" name="dyn_range"/></p>
