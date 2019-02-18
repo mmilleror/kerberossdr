@@ -954,8 +954,6 @@ def init():
     fir_size = form.spinBox_fir_tap_size.value()
     decimation = form.spinBox_decimation.value()
 
-    upd_rate = form.label_update_rate.text()
-
     return template ('init.tpl', {'center_freq':center_freq, 
 				'samp_index':samp_index, 
 				'gain_index':gain_index,
@@ -965,8 +963,7 @@ def init():
 				'dc_comp':dc_comp,
 				'filt_bw':filt_bw,
 				'fir_size':fir_size,
-				'decimation':decimation,
-				'upd_rate':upd_rate})
+				'decimation':decimation})
 
 @post('/init') # or @route('/login', method='POST')
 def do_init():
@@ -1030,6 +1027,18 @@ def do_init():
 def static(path):
     return static_file(path, root='static')
 
+@get('/stats')
+def stats():
+
+    upd_rate = form.label_update_rate.text()
+
+    if(form.module_receiver.overdrive_detect_flag):
+       ovr_drv = "YES"
+    else:
+       ovr_drv = "NO"
+
+    return template ('stats.tpl', {'upd_rate':upd_rate,
+				'ovr_drv':ovr_drv})
 
 
 app.exec_()

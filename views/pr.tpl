@@ -1,9 +1,7 @@
 <html>
-<b>Passive Radar</b>
-
-<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a></font></p>
+<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
 <hr>
-
+<b>Passive Radar</b>
 <form action="/pr" method="post">
 
 	<p><b>Channel Configuration</b></p>

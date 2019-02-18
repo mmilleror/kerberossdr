@@ -1,6 +1,6 @@
 <html>
 
-<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a></font></p>
+<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
 <hr>
 
 <p><font size = "4"><a href="/static/compass.html">Compass</a></font></p>

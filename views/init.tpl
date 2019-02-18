@@ -1,6 +1,5 @@
 <html>
-
-<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a></font></p>
+<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
 <hr>
 
 <div>
@@ -194,10 +193,6 @@
         <input type="hidden" name="reboot" value="reboot" />
 	<p><input value="Reboot Software" type="submit" /></p>
 </form>
-<hr>
-Update Rate: {{upd_rate}}
-<hr>
-</div>
 <div>
 <script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
 
