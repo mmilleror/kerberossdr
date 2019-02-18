@@ -252,7 +252,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         # Connect combobox signals
         self.comboBox_antenna_alignment.currentIndexChanged.connect(self.set_DOA_params)
-        
+        self.comboBox_cc_det_windowing.currentIndexChanged.connect(self.set_windowing_mode)        
+
+
         # Instantiate and configura Hydra modules                              
         self.module_receiver = ReceiverRTLSDR()        
 
@@ -269,6 +271,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_spectrum_params()        
         self.set_sync_params()        
         self.set_DOA_params()  
+        self.set_windowing_mode()
 
         self.DOA_time = time.time()
         self.PR_time = time.time()
@@ -374,6 +377,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set Decimation
         self.module_receiver.decimation_ratio = self.spinBox_decimation.value()
         self.module_signal_processor.fs = self.module_receiver.fs/self.module_receiver.decimation_ratio
+
+    def set_windowing_mode(self):
+        self.module_signal_processor.windowing_mode = int(self.comboBox_cc_det_windowing.currentIndex())
+
+
     def set_DOA_params(self):
         """
             Update DOA processing parameters
@@ -779,7 +787,16 @@ def pr():
     max_range = form.doubleSpinBox_cc_det_max_range.value()
     max_doppler = form.doubleSpinBox_cc_det_max_Doppler.value()
 
+    windowing_mode = int(form.comboBox_cc_det_windowing.currentIndex())
+
     dyn_range = form.spinBox_rd_dyn_range.value()
+
+
+    en_det = form.checkBox_en_autodet.checkState()
+
+    est_win = form.spinBox_cfar_est_win.value()
+    guard_win = form.spinBox_cfar_guard_win.value()
+    thresh_det = form.doubleSpinBox_cfar_threshold.value()
 
     return template ('pr.tpl', {'en_pr':en_pr,
 				'ref_ch':ref_ch,
@@ -788,7 +805,12 @@ def pr():
 				'filt_dim':filt_dim,
 				'max_range':max_range,
 				'max_doppler':max_doppler,
-				'dyn_range':dyn_range})
+				'windowing_mode':windowing_mode,
+				'dyn_range':dyn_range,
+				'en_det':en_det,
+				'est_win':est_win,
+				'guard_win':guard_win,
+				'thresh_det':thresh_det})
 
 @post('/pr')
 def do_pr():
@@ -813,8 +835,23 @@ def do_pr():
     max_doppler = request.forms.get('max_doppler')
     form.doubleSpinBox_cc_det_max_Doppler.setProperty("value", max_doppler)
 
+    windowing_mode = request.forms.get('windowing_mode')
+    form.comboBox_cc_det_windowing.setCurrentIndex(int(windowing_mode))
+
     dyn_range = request.forms.get('dyn_range')
     form.spinBox_rd_dyn_range.setProperty("value", dyn_range)
+
+    en_det = request.forms.get('en_det')
+    form.checkBox_en_autodet.setChecked(True if en_det=="on" else False)
+
+    est_win = request.forms.get('est_win')
+    form.spinBox_cfar_est_win.setProperty("value", est_win)
+
+    guard_win = request.forms.get('guard_win')
+    form.spinBox_cfar_guard_win.setProperty("value", guard_win)
+
+    thresh_det = request.forms.get('thresh_det')
+    form.doubleSpinBox_cfar_threshold.setProperty("value", thresh_det)
 
     form.set_PR_params()
     return redirect('pr')

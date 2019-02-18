@@ -105,6 +105,7 @@ class SignalProcessor(QtCore.QThread):
         self.en_td_filtering = False
         self.td_filter_dimension = 1        
         self.max_Doppler = 500  # [Hz]
+        self.windowing_mode = 0
         self.max_range = 128  # [range cell]
         self.cfar_win_params = [10,10,4,4] # [Est. win length, Est. win width, Guard win length, Guard win width]
         self.cfar_threshold = 13
@@ -362,7 +363,12 @@ class SignalProcessor(QtCore.QThread):
             #surv_ch, w = cc.Wiener_SMI(ref_ch, surv_ch, self.td_filter_dimension, imp="fast")
             #print("[ DONE ] Timde domain filtering finished")
 
-        surv_ch = det.windowing(surv_ch, "Hamming")
+
+        if(self.windowing_mode == 0):
+           surv_ch = det.windowing(surv_ch, "Rectangular")
+        else:
+           surv_ch = det.windowing(surv_ch, "Hamming")
+           
         self.RD_matrix = det.cc_detector_ons(ref_ch, surv_ch, self.fs, self.max_Doppler, self.max_range, verbose=0, Qt_obj=None)
         
         if self.en_PR_autodet:

@@ -21,7 +21,21 @@
 	<p>Max Range  (Must be power of 2): <input type="number" value="{{max_range}}" step="1" name="max_range"/></p>
 	<p>Max Doppler: <input type="number" value="{{max_doppler}}" step="1" name="max_doppler"/></p>
 
+        <p>Windowing:
+        <select name = "windowing_mode">
+                <option value="0" {{!'selected="selected"' if windowing_mode == 0 else ""}}>Rectangular</op$
+                <option value="1" {{!'selected="selected"' if windowing_mode == 1 else ""}}>Hamming</op$
+        </select></p>
+
 	<p>Dynamic Range <input type="number" value="{{dyn_range}}" step="1" name="dyn_range"/></p>
+
+	<b>Automatic Detection (CA-CFAR)</b>
+	<input type="checkbox" name="en_det" value="on" {{!'checked="checked"' if en_det >= 1 else ""}}>Enable/Disable<br>
+
+	<p>Estimation Window <input type="number" value="{{est_win}}" step="1" name="est_win"/></p>
+	<p>Guard Window <input type="number" value="{{guard_win}}" step="1" name="guard_win"/></p>
+	<p>Threshold [dB] <input type="number" value="{{thresh_det}}" step="0.01" name="thresh_det"/></p>
+
 
 	<p><input value="Update Paramaters" type="submit" /></p>
 </form>
