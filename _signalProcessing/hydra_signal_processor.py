@@ -55,6 +55,7 @@ from pyargus import directionEstimation as de
 from pyapril import channelPreparation as cp
 from pyapril import clutterCancellation as cc
 from pyapril import detector as det
+from pyapril.hitProcessor import CA_CFAR
 
 class SignalProcessor(QtCore.QThread):
 
@@ -87,6 +88,7 @@ class SignalProcessor(QtCore.QThread):
         self.en_calib_DOA_90 = False
         self.en_DOA_estimation = False
         self.en_PR_processing = False
+        self.en_PR_autodet = False
         
         # DOA processing options
         self.en_DOA_Bartlett = False
@@ -104,7 +106,10 @@ class SignalProcessor(QtCore.QThread):
         self.td_filter_dimension = 1        
         self.max_Doppler = 500  # [Hz]
         self.max_range = 128  # [range cell]
+        self.cfar_win_params = [10,10,4,4] # [Est. win length, Est. win width, Guard win length, Guard win width]
+        self.cfar_threshold = 13
         self.RD_matrix = np.ones((10,10))
+        self.hit_matrix = np.ones((10,10))
         self.RD_matrix_last = np.ones((10,10))
         self.RD_matrix_last_2 = np.ones((10,10))
         self.RD_matrix_last_3 = np.ones((10,10))
@@ -359,7 +364,9 @@ class SignalProcessor(QtCore.QThread):
 
         surv_ch = det.windowing(surv_ch, "Hamming")
         self.RD_matrix = det.cc_detector_ons(ref_ch, surv_ch, self.fs, self.max_Doppler, self.max_range, verbose=0, Qt_obj=None)
-
+        
+        if self.en_PR_autodet:
+            self.hit_matrix = CA_CFAR(self.RD_matrix,self.cfar_win_params, self.cfar_threshold)            
         #print("[ DONE ] Range-Doppler processing finished")
     def stop(self):
         self.run_processing = False

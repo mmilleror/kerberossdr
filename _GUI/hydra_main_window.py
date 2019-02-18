@@ -31,7 +31,7 @@ import subprocess
 
 np.seterr(divide='ignore')
 
-# Import Hydra modules
+# Import Kerberos modules
 currentPath = os.path.dirname(os.path.realpath(__file__))
 rootPath = os.path.dirname(currentPath)
 
@@ -228,6 +228,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.checkBox_en_dc_compensation.stateChanged.connect(self.set_iq_preprocessing_params)
         self.checkBox_en_passive_radar.stateChanged.connect(self.set_PR_params)
         self.checkBox_en_td_filter.stateChanged.connect(self.set_PR_params)
+        self.checkBox_en_autodet.stateChanged.connect(self.set_PR_params)
         self.checkBox_en_noise_source.stateChanged.connect(self.switch_noise_source)
         
         # Connect spinbox signals
@@ -243,6 +244,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.doubleSpinBox_cc_det_max_Doppler.valueChanged.connect(self.set_PR_params)
         self.spinBox_ref_ch_select.valueChanged.connect(self.set_PR_params)
         self.spinBox_surv_ch_select.valueChanged.connect(self.set_PR_params)
+        self.spinBox_cfar_est_win.valueChanged.connect(self.set_PR_params)
+        self.spinBox_cfar_guard_win.valueChanged.connect(self.set_PR_params)
+        self.doubleSpinBox_cfar_threshold.valueChanged.connect(self.set_PR_params)
 
         #self.spinBox_resync_time.valueChanged.connect(self.set_resync_time)
         
@@ -279,7 +283,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         # Set default confiuration for the GUI components
         self.set_default_configuration()
-
+        
         ip_addr = sys.argv[2]
         threading.Thread(target=run, kwargs=dict(host=ip_addr, port=8080, quiet=True, debug=True)).start()
 
@@ -432,12 +436,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.module_signal_processor.en_td_filtering = True
         else:
             self.module_signal_processor.en_td_filtering = False
-            
+        
+        if self.checkBox_en_autodet.checkState():
+            self.module_signal_processor.en_PR_autodet = True
+        else:
+            self.module_signal_processor.en_PR_autodet = False
+        
+        # Set CFAR parameters
+        self.module_signal_processor.cfar_win_params=[self.spinBox_cfar_est_win.value(), self.spinBox_cfar_est_win.value(), self.spinBox_cfar_guard_win.value(), self.spinBox_cfar_guard_win.value()]
+                
+        self.module_signal_processor.cfar_threshold = self.doubleSpinBox_cfar_threshold.value()
+        
+        # Set Time-domain clutter fitler parameters
         self.module_signal_processor.td_filter_dimension = self.spinBox_td_filter_dimension.value()
         
+        # Set Cross-Correlation detector parameters
         self.module_signal_processor.max_range = int(self.doubleSpinBox_cc_det_max_range.value())
         self.module_signal_processor.max_Doppler = int(self.doubleSpinBox_cc_det_max_Doppler.value())
         
+        # General channel settings
         self.module_signal_processor.ref_ch_id = self.spinBox_ref_ch_select.value()
         self.module_signal_processor.surv_ch_id = self.spinBox_surv_ch_select.value()
     
@@ -681,31 +698,46 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         callback description:
         ------------------
             Plot the previously obtained range-Doppler matrix
-        """
-                     
+        """        
+        # If Automatic detection is disabled the range-Doppler matrix is plotted otherwise the matrix
+        if not self.checkBox_en_autodet.checkState():
+            
+            # Set colormap TODO: Implement this properly
+            colormap = cm.get_cmap("jet")
+            colormap._init()
+            lut = (colormap._lut * 255).view(np.ndarray)
+            self.img_PR.imageItem.setLookupTable(lut)
+        
+            CAFMatrix = self.module_signal_processor.RD_matrix
+            CAFMatrix = np.abs(CAFMatrix)
+            CAFDynRange = self.spinBox_rd_dyn_range.value()
 
-        #self.module_receiver.channel_number = 2
+            #print("Max Val" + str(np.amax(CAFMatrix)))
+            #print("X-Size" + str(np.shape(CAFMatrix)[0]))
+            #print("Y-Size" + str(np.shape(CAFMatrix)[1]))
 
-        CAFMatrix = self.module_signal_processor.RD_matrix
-        CAFMatrix = np.abs(CAFMatrix)
-        CAFDynRange = self.spinBox_rd_dyn_range.value()
+            CAFMatrix = CAFMatrix /  np.amax(CAFMatrix)  # Noramlize with the maximum value
+            CAFMatrixLog = 20 * np.log10(CAFMatrix)  # Change to logscale
 
-        #print("Max Val" + str(np.amax(CAFMatrix)))
-        #print("X-Size" + str(np.shape(CAFMatrix)[0]))
-        #print("Y-Size" + str(np.shape(CAFMatrix)[1]))
+            for i in range(np.shape(CAFMatrix)[0]):  # Remove extreme low values
+                for j in range(np.shape(CAFMatrix)[1]):
+                    if CAFMatrixLog[i, j] < -CAFDynRange:
+                        CAFMatrixLog[i, j] = -CAFDynRange
 
-        CAFMatrix = CAFMatrix /  np.amax(CAFMatrix)  # Noramlize with the maximum value
-        CAFMatrixLog = 20 * np.log10(CAFMatrix)  # Change to logscale
+            # plot
+            #CAFPlot = self.axes_RD.imshow(CAFMatrixLog, interpolation='sinc', cmap='jet', origin='lower', aspect='auto')
+            CAFMatrixLog = scipy.ndimage.zoom(CAFMatrixLog, self.PR_interp_factor, order=3)    
+            self.img_PR.setImage(CAFMatrixLog)
 
-        for i in range(np.shape(CAFMatrix)[0]):  # Remove extreme low values
-            for j in range(np.shape(CAFMatrix)[1]):
-                if CAFMatrixLog[i, j] < -CAFDynRange:
-                    CAFMatrixLog[i, j] = -CAFDynRange
-
-	# plot
-        #CAFPlot = self.axes_RD.imshow(CAFMatrixLog, interpolation='sinc', cmap='jet', origin='lower', aspect='auto')
-        CAFMatrixLog = scipy.ndimage.zoom(CAFMatrixLog, self.PR_interp_factor, order=3)    
-        self.img_PR.setImage(CAFMatrixLog)
+        
+        else:
+            # Set colormap TODO: Implement this properly
+            colormap = cm.get_cmap("gray")
+            colormap._init()
+            lut = (colormap._lut * 255).view(np.ndarray)
+            self.img_PR.imageItem.setLookupTable(lut)            
+            CAFMatrix = self.module_signal_processor.hit_matrix
+            self.img_PR.setImage(CAFMatrix)
 
         #self.img_PR.getImageItem().save('/ram/pr.jpg')
         #self.img_PR.export('/ram/pr.jpg')
@@ -715,11 +747,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.export_PR.export('/ram/pr.jpg')        
 
 
+
         # Set doppler speed Y-AXIS
         max_Doppler = int(self.doubleSpinBox_cc_det_max_Doppler.value())
         ay = self.plt_PR.getAxis('left')
-        matrix_ySize = np.shape(CAFMatrixLog)[0]
+        matrix_ySize = np.shape(CAFMatrix)[0]
         ay.setTicks([[(0, -max_Doppler), (matrix_ySize * 0.25, -max_Doppler * 0.5), (matrix_ySize/2, 0), (matrix_ySize * 0.75, max_Doppler * 0.5), (matrix_ySize, max_Doppler)], []])
+
 
 
 app = QApplication(sys.argv)
