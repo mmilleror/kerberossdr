@@ -726,8 +726,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # plot
             #CAFPlot = self.axes_RD.imshow(CAFMatrixLog, interpolation='sinc', cmap='jet', origin='lower', aspect='auto')
-            CAFMatrixLog = scipy.ndimage.zoom(CAFMatrixLog, self.PR_interp_factor, order=3)    
-            self.img_PR.setImage(CAFMatrixLog)
+            plotPRImage = scipy.ndimage.zoom(CAFMatrixLog, self.PR_interp_factor, order=3)    
+            self.img_PR.setImage(plotPRImage)
 
         
         else:
@@ -737,7 +737,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lut = (colormap._lut * 255).view(np.ndarray)
             self.img_PR.imageItem.setLookupTable(lut)            
             CAFMatrix = self.module_signal_processor.hit_matrix
-            self.img_PR.setImage(CAFMatrix)
+            plotPRImage = scipy.ndimage.zoom(CAFMatrix, self.PR_interp_factor, order=3)    
+            self.img_PR.setImage(plotPRImage)
 
         #self.img_PR.getImageItem().save('/ram/pr.jpg')
         #self.img_PR.export('/ram/pr.jpg')
@@ -751,7 +752,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set doppler speed Y-AXIS
         max_Doppler = int(self.doubleSpinBox_cc_det_max_Doppler.value())
         ay = self.plt_PR.getAxis('left')
-        matrix_ySize = np.shape(CAFMatrix)[0]
+        matrix_ySize = np.shape(plotPRImage)[0]
         ay.setTicks([[(0, -max_Doppler), (matrix_ySize * 0.25, -max_Doppler * 0.5), (matrix_ySize/2, 0), (matrix_ySize * 0.75, max_Doppler * 0.5), (matrix_ySize, max_Doppler)], []])
 
 
