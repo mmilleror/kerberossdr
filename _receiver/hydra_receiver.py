@@ -24,7 +24,6 @@ import time
 from struct import pack, unpack
 from scipy import signal
 
-
 class ReceiverRTLSDR():
     """
                     RTL SDR based receiver controller module
@@ -60,7 +59,6 @@ class ReceiverRTLSDR():
     # GUI Signal definitions
    
     def __init__(self):
-
             print("[ INFO ] Python rec: Starting Python RTL-SDR receiver")
             
             # Receiver control parameters            
@@ -142,9 +140,9 @@ class ReceiverRTLSDR():
         self.fir_size = fir_size
         
     def download_iq_samples(self):
-            self.iq_samples = np.zeros((self.channel_number, self.block_size//2), dtype=complex)            
-            self.gc_fifo_descriptor.write(self.gate_trigger_byte)            
-            #print("[ INFO ] Python rec: Trigger writen")                              
+            self.iq_samples = np.zeros((self.channel_number, self.block_size//2), dtype=complex)
+            self.gc_fifo_descriptor.write(self.gate_trigger_byte)
+            #print("[ INFO ] Python rec: Trigger writen")
             # -*- coding: utf-8 -*-
 
             read_size = self.block_size * self.channel_number
@@ -182,13 +180,13 @@ class ReceiverRTLSDR():
                 #imag = np.array(byte_data[1::2], dtype=np.uint8)
                 self.iq_samples[m,:].real, self.iq_samples[m,:].imag = real, imag
                 # Check overdrive
-                if (np.greater(self.iq_samples[m, :].real,int(127+128*overdrive_margin)).any()) or  (np.less(self.iq_samples[m, :].real, int(127-128*overdrive_margin)).any()):                      
-                      self.overdrive_detect_flag = True
+                #if (np.greater(self.iq_samples[m, :].real,int(127+128*overdrive_margin)).any()) or  (np.less(self.iq_samples[m, :].real, int(127-128*overdrive_margin)).any()):                      
+                #      self.overdrive_detect_flag = True
                       #print("[ WARNING ] Overdrive at ch: %d"%m)   
                       #print("real max: ",np.max(self.iq_samples[m, :].real))
                       #print("real min: ",np.min(self.iq_samples[m, :].real))
-                if (np.greater(self.iq_samples[m, :].imag, int(127+128*overdrive_margin)).any()) or (np.less(self.iq_samples[m, :].imag, int(127-128*overdrive_margin)).any()):                      
-                      self.overdrive_detect_flag = True
+                #if (np.greater(self.iq_samples[m, :].imag, int(127+128*overdrive_margin)).any()) or (np.less(self.iq_samples[m, :].imag, int(127-128*overdrive_margin)).any()):                      
+                #      self.overdrive_detect_flag = True
                       #print("[ WARNING ] Overdrive at ch: %d"%m)                
                       #print("imag max: ",np.max(self.iq_samples[m, :].real))
                       #print("imag min: ",np.min(self.iq_samples[m, :].real))

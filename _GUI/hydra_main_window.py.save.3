@@ -254,7 +254,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.comboBox_antenna_alignment.currentIndexChanged.connect(self.set_DOA_params)
         self.comboBox_cc_det_windowing.currentIndexChanged.connect(self.set_windowing_mode)        
 
-        # Instantiate and configura Hydra modules                              
+
+        # Instantiate and configura Hydra modules
         self.module_receiver = ReceiverRTLSDR()
 
         self.module_receiver.block_size = int(sys.argv[1]) * 1024
@@ -697,8 +698,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.DOA_time = currentTime
             self.export_DOA.export('/ram/doa.jpg')
 
-       
-
+        
     def RD_plot(self):        
         """
         Event type: Surveillance processor module has calculated the new range-Doppler matrix
@@ -755,11 +755,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.PR_time = currentTime
             self.export_PR.export('/ram/pr.jpg')        
 
+
+
         # Set doppler speed Y-AXIS
         max_Doppler = int(self.doubleSpinBox_cc_det_max_Doppler.value())
         ay = self.plt_PR.getAxis('left')
         matrix_ySize = np.shape(plotPRImage)[0]
         ay.setTicks([[(0, -max_Doppler), (matrix_ySize * 0.25, -max_Doppler * 0.5), (matrix_ySize/2, 0), (matrix_ySize * 0.75, max_Doppler * 0.5), (matrix_ySize, max_Doppler)], []])
+
 
 
 app = QApplication(sys.argv)
