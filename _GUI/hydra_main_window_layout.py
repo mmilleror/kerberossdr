@@ -94,6 +94,7 @@ class Ui_MainWindow(object):
         self.comboBox_sampling_freq.addItem(_fromUtf8(""))        
         self.comboBox_sampling_freq.addItem(_fromUtf8(""))        
         self.comboBox_sampling_freq.addItem(_fromUtf8(""))        
+        self.comboBox_sampling_freq.addItem(_fromUtf8(""))        
         self.gridLayout_16.addWidget(self.comboBox_sampling_freq, 1, 1, 1, 1)
 
 
@@ -732,6 +733,7 @@ class Ui_MainWindow(object):
         self.comboBox_sampling_freq.setItemText(5, _translate("KerberosSDR", "1.92", None))
         self.comboBox_sampling_freq.setItemText(6, _translate("KerberosSDR", "2.048", None))
         self.comboBox_sampling_freq.setItemText(7, _translate("KerberosSDR", "2.4", None))
+        self.comboBox_sampling_freq.setItemText(8, _translate("KerberosSDR", "2.56", None))
         self.comboBox_sampling_freq.setCurrentIndex(2)
 
 

@@ -18,6 +18,7 @@
 		<option value="5" {{!'selected="selected"' if samp_index == 5 else ""}}>1.92</option>
 		<option value="6" {{!'selected="selected"' if samp_index == 6 else ""}}>2.048</option>
 		<option value="7" {{!'selected="selected"' if samp_index == 7 else ""}}>2.4</option>
+		<option value="8" {{!'selected="selected"' if samp_index == 8 else ""}}>2.56</option>
 	</select></p>
 
         <p>RX1 Gain [dB]:
