@@ -67,7 +67,7 @@ int BUFF_LEN = 0;
 
 struct rtl_rec_struct* rtl_receivers;
 pthread_mutex_t buff_ind_mutex;
-pthread_mutex_t gpio_mutex;
+pthread_mutex_t fifo_mutex;
 pthread_cond_t buff_ind_cond;
 pthread_t fifo_read_thread;
 
@@ -160,10 +160,9 @@ void * fifo_read_tf(void* arg)
             noise_source_state = 0;
             reconfig_trigger = 0;
         }
-
-
+  
         pthread_cond_signal(&buff_ind_cond);
-        pthread_mutex_unlock(&buff_ind_mutex); 
+        pthread_mutex_unlock(&buff_ind_mutex);
     }
     fclose(fd);
     return NULL;
@@ -199,6 +198,7 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
         if((rtl_rec->buff_ind - read_buff_ind) == 0)
             rtl_rec->buff_ind = read_buff_ind + 1;
 
+                
         pthread_cond_signal(&buff_ind_cond);
         pthread_mutex_unlock(&buff_ind_mutex);
 }
@@ -292,6 +292,7 @@ int main( int argc, char** argv )
            
     }
     pthread_mutex_init(&buff_ind_mutex, NULL);
+//    pthread_mutex_init(&fifo_mutex, NULL);
     pthread_cond_init(&buff_ind_cond, NULL); 
 
     // we're going to test the "data_ready, exit_flag and reconfig_trigger" so we need the mutex for safety
@@ -346,9 +347,16 @@ int main( int argc, char** argv )
   int data_ready = 1;
   struct rtl_rec_struct *rtl_rec;
   
+  
+
   while( !exit_flag )
-  {
+  {  
      
+      /* block this thread until another thread signals cond. While
+      blocked, the mutex is released, then re-aquired before this
+      thread is woken up and the call returns. */
+      pthread_cond_wait( &buff_ind_cond, &buff_ind_mutex);
+
       data_ready = 1;
       // Do we have new data ready for the processing?
       for(int i=0; i<NUM_CH; i++)
@@ -358,6 +366,7 @@ int main( int argc, char** argv )
         {
             //fprintf(stderr, "[ INFO ] No data ready at dev:%d\n",i);               
             data_ready = 0;
+            //pthread_mutex_unlock(&buff_ind_mutex); 
             break;
         }          
       }
@@ -385,6 +394,7 @@ int main( int argc, char** argv )
           writeCount = 0;
           //fflush(stdout);
           read_buff_ind ++;
+          //pthread_mutex_unlock(&buff_ind_mutex); 
 
           /* We need to reconfigure the tuner, so the async read must be stopped*/
           if(reconfig_trigger==1)
@@ -405,11 +415,8 @@ int main( int argc, char** argv )
 
       }
      
-      
-     /* block this thread until another thread signals cond. While
-     blocked, the mutex is released, then re-aquired before this
-     thread is woken up and the call returns. */
-     pthread_cond_wait( &buff_ind_cond, &buff_ind_mutex);
+     
+     
      /* Waiting for new data or reconfiguration command*/
      
    }
