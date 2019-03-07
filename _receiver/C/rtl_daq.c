@@ -51,19 +51,19 @@ gcc -std=c99 rtl_rec.h rtl_daq.c -lpthread -lrtlsdr -o rtl_daq
 
 #define NUM_CH 4  // Number of receiver channels
 #define NUM_BUFF 2 // Number of buffers
-//#define BUFF_LEN (8*16384) //(16 * 16384)
+#define BUFF_LEN (16*16384) //(16 * 16384)
 #define SAMPLE_RATE 2000000
 #define CENTER_FREQ 107200000
 #define GAIN 5
 
 #define CFN "_receiver/C/rec_control_fifo" /* Receiver control FIFO name */
 #define NOTUSED(V) ((void) V)
-#define ASYNC_BUF_NUMBER     12
+#define ASYNC_BUF_NUMBER     30
 
 #define DEFAULT_RATE         2000000
 #define DEFAULT_FREQ         107200000
 
-int BUFF_LEN = 0;
+//int BUFF_LEN = 0;
 
 struct rtl_rec_struct* rtl_receivers;
 pthread_mutex_t buff_ind_mutex;
@@ -175,7 +175,7 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
 
         struct rtl_rec_struct *rtl_rec = (struct rtl_rec_struct *) ctx;// Set the receiver's structure
 
-        if (len > BUFF_LEN)
+        if (len != BUFF_LEN)
         {
             fprintf(stderr, "[ DEBUG ] Len greather than BUFF_LEN\n");
             len = BUFF_LEN;   
@@ -197,6 +197,9 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
 
         if((rtl_rec->buff_ind - read_buff_ind) == 0)
             rtl_rec->buff_ind = read_buff_ind + 1;
+
+    //fprintf(stderr, "Read_buff_ind:%d, rtl_recbuff_ind:%d\n",rtl_rec->buff_ind, rtl_rec->buff_ind);
+
 
                 
         pthread_cond_signal(&buff_ind_cond);
@@ -257,12 +260,14 @@ void *read_thread_entry(void *arg)
 return NULL;
 }
 
-
 int main( int argc, char** argv )
 {
+    static char buf[262144 * 4 * 30];
+
+    setvbuf(stdout, buf, _IOFBF, sizeof(buf));
     fprintf(stderr, "[ INFO ] Starting multichannel coherent RTL-SDR receiver\n");
 
-    BUFF_LEN = (atoi(argv[1])/16) * 16384;
+    //BUFF_LEN = (atoi(argv[1])/16) * 16384;
 
     // Allocation
     rtl_receivers = malloc(sizeof(struct rtl_rec_struct)*NUM_CH);
@@ -392,7 +397,7 @@ int main( int argc, char** argv )
               //fflush(stdout);
           }
           writeCount = 0;
-          //fflush(stdout);
+          fflush(stdout);
           read_buff_ind ++;
           //pthread_mutex_unlock(&buff_ind_mutex); 
 

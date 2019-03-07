@@ -27,7 +27,9 @@
 //#define BUFFER_SIZE 1024 * 128 * 4//1024*256*4
 #define CFN "_receiver/C/gate_control_fifo" // Name of the gate control fifo - Control FIFO name
 
-int BUFFER_SIZE = 0;
+#define BUFFER_SIZE 256 * 1024 * 4
+
+
 static sem_t trigger_sem;
 static volatile int trigger=0, exit_flag=0;
 pthread_t fifo_read_thread;   
@@ -66,7 +68,12 @@ void * fifo_read_tf(void* arg)
 int main(int argc, char** argv)
 {
 
-    BUFFER_SIZE = atoi(argv[1]) * 1024 * 4;
+    static char buf[262144 * 4 * 30];
+
+    setvbuf(stdout, buf, _IOFBF, sizeof(buf));
+
+
+    //BUFFER_SIZE = atoi(argv[1]) * 1024 * 4;
 
     int read_size;
     uint8_t * buffer;    

@@ -157,9 +157,11 @@ class SignalProcessor(QtCore.QThread):
             start_time = time.time()            
 
             # Download samples
-            time.sleep(0.01)
+            #time.sleep(0.01)
             if(self.en_sync or self.en_spectrum):
                 time.sleep(0.25)
+            #if(self.en_PR_processing):
+            #    time.sleep(1.5)
 
                 #busy_wait(0.5)
 
@@ -188,7 +190,7 @@ class SignalProcessor(QtCore.QThread):
                 self.signal_spectrum_ready.emit()
             
             # Synchronization
-            if self.en_sync:
+            if self.en_sync or self.timed_sync:
                 #print("Sync graph enabled")
                 self.sample_delay()
                 self.signal_sync_ready.emit()
@@ -203,7 +205,7 @@ class SignalProcessor(QtCore.QThread):
                 # IQ correction
                 for m in range(self.channel_number):
                     self.module_receiver.iq_corrections[m] *= np.size(self.module_receiver.iq_samples[0, :])/(np.dot(self.module_receiver.iq_samples[m, :],self.module_receiver.iq_samples[0, :].conj()))                
-                print("Corrections: ",self.module_receiver.iq_corrections)
+                #print("Corrections: ",self.module_receiver.iq_corrections)
                 self.en_calib_iq = False
             
             if self.en_calib_DOA_90:
@@ -217,7 +219,7 @@ class SignalProcessor(QtCore.QThread):
                 for m in range(self.channel_number):
                     
                     self.module_receiver.iq_corrections[m] *= ref_vector[m]*N/(np.dot(self.module_receiver.iq_samples[m, :],self.module_receiver.iq_samples[0, :].conj()))                
-                print("Corrections: ",self.module_receiver.iq_corrections)
+                #print("Corrections: ",self.module_receiver.iq_corrections)
                 self.en_calib_DOA_90 = False
                 
             # Direction of Arrival estimation
@@ -238,11 +240,9 @@ class SignalProcessor(QtCore.QThread):
             if self.en_record:
                 np.save('hydra_samples.npy', self.module_receiver.iq_samples)
 
-            stop_time = time.time()
-            self.signal_period.emit(stop_time - start_time)
 
 # Code to maintain sync
-            '''if self.timed_sync and not self.en_sync:
+            if self.timed_sync and not self.en_sync:
                 if not self.noise_checked:
                     self.module_receiver.switch_noise_source(0)
                 self.timed_sync = False
@@ -258,7 +258,11 @@ class SignalProcessor(QtCore.QThread):
                 self.module_receiver.switch_noise_source(1)
                 time.sleep(0.1)
                 self.runningSync = 1
-                self.timed_sync = True'''
+                self.timed_sync = True
+
+            stop_time = time.time()
+            self.signal_period.emit(stop_time - start_time)
+
 
     def sample_delay(self):
         #print("Entered sample delay func")
@@ -365,7 +369,8 @@ class SignalProcessor(QtCore.QThread):
 
 
         if(self.windowing_mode == 0):
-           surv_ch = det.windowing(surv_ch, "Rectangular")
+           pass
+           #surv_ch = det.windowing(surv_ch, "Rectangular")
         else:
            surv_ch = det.windowing(surv_ch, "Hamming")
            

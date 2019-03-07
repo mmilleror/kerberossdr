@@ -1,5 +1,5 @@
 var url = ""; //url to load image from
-var refreshInterval = 1000; //in ms
+var refreshInterval = 1060; //in ms
 var drawDate = true; //draw date string
 var img;
 
@@ -18,6 +18,7 @@ function init(param) {
 function refresh()
 {
     img.src = url + "?t=" + new Date().getTime();
+    //echo '<img src="' . url . '?m=' . filemtime(url) . '">';
     setTimeout("refresh()",refreshInterval);
 }
 

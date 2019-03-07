@@ -80,6 +80,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
 
+        f = open('/dev/null', 'w')
+        sys.stdout = f
+
+
         self.tabWidget.setCurrentIndex(0)
 
         # Set pyqtgraph to use white background, black foreground
@@ -248,7 +252,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.spinBox_cfar_guard_win.valueChanged.connect(self.set_PR_params)
         self.doubleSpinBox_cfar_threshold.valueChanged.connect(self.set_PR_params)
 
-        #self.spinBox_resync_time.valueChanged.connect(self.set_resync_time)
+        self.spinBox_resync_time.valueChanged.connect(self.set_resync_time)
         
         # Connect combobox signals
         self.comboBox_antenna_alignment.currentIndexChanged.connect(self.set_DOA_params)
@@ -465,8 +469,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.module_signal_processor.ref_ch_id = self.spinBox_ref_ch_select.value()
         self.module_signal_processor.surv_ch_id = self.spinBox_surv_ch_select.value()
     
-    #def set_resync_time(self):
-    #    self.module_signal_processor.resync_time = self.spinBox_resync_time.value()
+    def set_resync_time(self):
+        self.module_signal_processor.resync_time = self.spinBox_resync_time.value()
 
 
     def pb_close_clicked(self):
@@ -490,14 +494,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.module_signal_processor.stop()
             
     def pb_sync_clicked(self):
-        print("[ INFO ] Sync requested")
+        #print("[ INFO ] Sync requested")
         self.module_signal_processor.en_sample_offset_sync=True
 
     def pb_calibrate_iq_clicked(self):
-        print("[ INFO ] IQ calibration requested")        
+        #print("[ INFO ] IQ calibration requested")        
         self.module_signal_processor.en_calib_iq=True
     def pb_calibrate_DOA_90_clicked(self):
-        print("[ INFO ] DOA IQ calibration requested")   
+        #print("[ INFO ] DOA IQ calibration requested")   
         self.module_signal_processor.en_calib_DOA_90=True
         
     def pb_del_sync_history_clicked(self):
@@ -735,6 +739,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # plot
             #CAFPlot = self.axes_RD.imshow(CAFMatrixLog, interpolation='sinc', cmap='jet', origin='lower', aspect='auto')
             plotPRImage = scipy.ndimage.zoom(CAFMatrixLog, self.PR_interp_factor, order=3)    
+            self.img_PR.clear()
             self.img_PR.setImage(plotPRImage)
 
         
@@ -746,14 +751,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.img_PR.imageItem.setLookupTable(lut)            
             CAFMatrix = self.module_signal_processor.hit_matrix
             plotPRImage = scipy.ndimage.zoom(CAFMatrix, self.PR_interp_factor, order=3)    
+            self.img_PR.clear()
             self.img_PR.setImage(plotPRImage)
 
         #self.img_PR.getImageItem().save('/ram/pr.jpg')
         #self.img_PR.export('/ram/pr.jpg')
+        
         currentTime = time.time()
         if((currentTime - self.PR_time) > 0.5):
             self.PR_time = currentTime
-            self.export_PR.export('/ram/pr.jpg')        
+            self.export_PR.export(toBytes=True).save('/ram/pr.jpg', quality=30)
 
         # Set doppler speed Y-AXIS
         max_Doppler = int(self.doubleSpinBox_cc_det_max_Doppler.value())
@@ -765,6 +772,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 app = QApplication(sys.argv)
 form = MainWindow()
 form.show()
+
 
 def reboot_program():
     form.module_receiver.close()     
@@ -1036,7 +1044,6 @@ def stats():
 
     return template ('stats.tpl', {'upd_rate':upd_rate,
 				'ovr_drv':ovr_drv})
-
 
 app.exec_()
 

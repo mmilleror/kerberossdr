@@ -353,16 +353,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.pushButton_iq_calib)
 
         # Add Resync Time Control Box
-        #self.label_resync_time = QtGui.QLabel(self.groupBox)
-        #self.label_resync_time.setObjectName(_fromUtf8("label_resync_time"))
-        #self.gridLayout_8.addWidget(self.label_resync_time, 2, 0, 1, 1)
+        self.label_resync_time = QtGui.QLabel(self.groupBox)
+        self.label_resync_time.setObjectName(_fromUtf8("label_resync_time"))
+        self.gridLayout_8.addWidget(self.label_resync_time, 2, 0, 1, 1)
 
-        #self.spinBox_resync_time = QtGui.QSpinBox(self.groupBox)
-        #self.spinBox_resync_time.setObjectName(_fromUtf8("spinBox_resync_time"))
-        #self.spinBox_resync_time.setMinimum(0)
-        #self.spinBox_resync_time.setMaximum(99999)
+        self.spinBox_resync_time = QtGui.QSpinBox(self.groupBox)
+        self.spinBox_resync_time.setObjectName(_fromUtf8("spinBox_resync_time"))
+        self.spinBox_resync_time.setMinimum(0)
+        self.spinBox_resync_time.setMaximum(99999)
 
-        #self.gridLayout_8.addWidget(self.spinBox_resync_time, 2, 1, 1, 1)
+        self.gridLayout_8.addWidget(self.spinBox_resync_time, 2, 1, 1, 1)
 
 
 
@@ -884,8 +884,8 @@ class Ui_MainWindow(object):
         self.groupBox.setTitle(_translate("KerberosSDR", "Syncronization", None))
         self.label_12.setText(_translate("KerberosSDR", "Enable sync display:", None))
         self.label_32.setText(_translate("KerberosSDR", "Noise source ON/OFF", None))
-        #self.spinBox_resync_time.setToolTip(_translate("KerberosSDR", "<html><head/><body><p>Set to 10 or higher to automatically resync samples every x seconds. Values below 10 disable timed resync.</p></body></html>", None))
-        #self.label_resync_time.setText(_translate("KerberosSDR", "Set Resync Time", None))
+        self.spinBox_resync_time.setToolTip(_translate("KerberosSDR", "<html><head/><body><p>Set to 10 or higher to automatically resync samples every x seconds. Values below 10 disable timed resync.</p></body></html>", None))
+        self.label_resync_time.setText(_translate("KerberosSDR", "Set Resync Time", None))
         self.pushButton_del_sync_history.setText(_translate("KerberosSDR", "Delete history", None))
         self.pushButton_sync.setText(_translate("KerberosSDR", "Sample sync", None))
         self.pushButton_iq_calib.setText(_translate("KerberosSDR", "Calibrate IQ", None))

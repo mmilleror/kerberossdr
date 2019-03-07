@@ -1,4 +1,5 @@
 <html>
+<meta http-equiv="Cache-control" content="no-cache" charset="utf-8">
 <p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
 <hr>
 
@@ -51,6 +52,7 @@
 		<option value="25" {{!'selected="selected"' if gain_index == 25 else ""}}>43.9</option>
 		<option value="26" {{!'selected="selected"' if gain_index == 26 else ""}}>44.5</option>
 		<option value="27" {{!'selected="selected"' if gain_index == 27 else ""}}>48.0</option>
+		<option value="28" {{!'selected="selected"' if gain_index == 28 else ""}}>49.6</option>
 	</select></p>
 
 
@@ -84,6 +86,7 @@
 		<option value="25" {{!'selected="selected"' if gain_index_2 == 25 else ""}}>43.9</option>
 		<option value="26" {{!'selected="selected"' if gain_index_2 == 26 else ""}}>44.5</option>
 		<option value="27" {{!'selected="selected"' if gain_index_2 == 27 else ""}}>48.0</option>
+		<option value="28" {{!'selected="selected"' if gain_index_2 == 28 else ""}}>49.6</option>
 	</select></p>
 
 
@@ -117,6 +120,7 @@
 		<option value="25" {{!'selected="selected"' if gain_index_3 == 25 else ""}}>43.9</option>
 		<option value="26" {{!'selected="selected"' if gain_index_3 == 26 else ""}}>44.5</option>
 		<option value="27" {{!'selected="selected"' if gain_index_3 == 27 else ""}}>48.0</option>
+		<option value="28" {{!'selected="selected"' if gain_index_3 == 28 else ""}}>49.6</option>
 	</select></p>
 
 
@@ -150,6 +154,7 @@
 		<option value="25" {{!'selected="selected"' if gain_index_4 == 25 else ""}}>43.9</option>
 		<option value="26" {{!'selected="selected"' if gain_index_4 == 26 else ""}}>44.5</option>
 		<option value="27" {{!'selected="selected"' if gain_index_4 == 27 else ""}}>48.0</option>
+		<option value="28" {{!'selected="selected"' if gain_index_4 == 28 else ""}}>49.6</option>
 	</select></p>
 
 
@@ -195,10 +200,11 @@
 	<p><input value="Reboot Software" type="submit" /></p>
 </form>
 <div>
-<script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
+<!--<script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
 
 <body onload="JavaScript:init('/static/spectrum.jpg');">
 <canvas id="canvas"/>
-</body>
+</body>-->
+<iframe width=100% height=100% src="http://192.168.86.42:8081/init_graph.html"></iframe>
 </div>
 </html>

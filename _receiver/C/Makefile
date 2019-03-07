@@ -3,7 +3,15 @@
 # Date: August 2018
 # Author: Tamás Pető
 CC=gcc
-CFLAGS=-Wall -march=native
+# For Raspberry Pi 3
+#CFLAGS=-Wall -O3 -mcpu=cortex-a53 -mfloat-abi=hard -mfpu=neon-fp-armv8 -mneon-for-64bits -mtune=cortex-a53
+
+# For Tinkerboard
+#CFLAGS=-Wall -O2 -march=armv7-a -mtune=cortex-a17 -mfpu=neon -mfloat-abi=hard
+
+# For Generic x86
+CFLAGS=-Wall -O2 -march=native
+
 RM= rm -f
 
 all: rtl_daq sync gate sim

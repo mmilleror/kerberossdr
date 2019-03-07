@@ -17,7 +17,8 @@ function init(param) {
 }
 function refresh()
 {
-    img.src = url + "?t=" + new Date().getTime();
+    //img.src = url + "?t=" + new Date().getTime();
+    echo '<img src="' . url . '?m=' . filemtime(url) . '">';
     setTimeout("refresh()",refreshInterval);
 }
 

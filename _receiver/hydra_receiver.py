@@ -59,7 +59,7 @@ class ReceiverRTLSDR():
     # GUI Signal definitions
    
     def __init__(self):
-            print("[ INFO ] Python rec: Starting Python RTL-SDR receiver")
+            #print("[ INFO ] Python rec: Starting Python RTL-SDR receiver")
             
             # Receiver control parameters            
             self.gc_fifo_name = "_receiver/C/gate_control_fifo"

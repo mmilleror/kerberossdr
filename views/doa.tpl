@@ -1,5 +1,5 @@
 <html>
-
+<meta http-equiv="Cache-control" content="no-cache" charset="utf-8">
 <p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
 <hr>
 
@@ -33,10 +33,12 @@
 	<p><input value="Update DOA" type="submit" /></p>
 </form>
 <hr>
-<script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
+<!--<script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
 
 <body onload="JavaScript:init('/static/doa.jpg');">
 <canvas id="canvas"/>
-</body>
+</body>-->
+
+<iframe width=100% height=100% src="http://192.168.86.42:8081/doa_graph.html"></iframe>
 
 </html>
