@@ -20,5 +20,3 @@ sudo ln -s /ram/spectrum.jpg _webDisplay/spectrum.jpg
 sudo ln -s /ram/sync.jpg _webDisplay/sync.jpg
 sudo ln -s /ram/doa.jpg _webDisplay/doa.jpg
 sudo ln -s /ram/pr.jpg _webDisplay/pr.jpg
-sudo ln -s /ram/DOA_value.html static/DOA_value.html
-
