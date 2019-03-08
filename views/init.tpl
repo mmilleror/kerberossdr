@@ -1,6 +1,6 @@
 <html>
 <meta http-equiv="Cache-control" content="no-cache" charset="utf-8">
-<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
+<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a></font></p>
 <hr>
 
 <div>
@@ -194,6 +194,7 @@
         <input type="hidden" name="stop" value="stop" />
 	<p><input value="Stop Processing" type="submit" /></p>
 </form>
+<iframe width=100% height=5% src="http://{{ip_addr}}:8080/stats"></iframe>
 <hr>
 <form action="/init" method="post">
         <input type="hidden" name="reboot" value="reboot" />
@@ -205,6 +206,6 @@
 <body onload="JavaScript:init('/static/spectrum.jpg');">
 <canvas id="canvas"/>
 </body>-->
-<iframe width=100% height=100% src="http://192.168.4.1:8081/init_graph.html"></iframe>
+<iframe width=100% height=100% src="http://{{ip_addr}}:8081/init_graph.html"></iframe>
 </div>
 </html>

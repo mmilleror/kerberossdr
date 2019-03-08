@@ -1,6 +1,6 @@
 <html>
 <meta http-equiv="Cache-control" content="no-cache" charset="utf-8">
-<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
+<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a></font></p>
 <hr>
 
 <b>Receiver Configuration</b>
@@ -29,14 +29,14 @@
 	<p><input value="Calibrate IQ" type="submit" /></p>
 </form>
 <hr>
-
+<iframe width=100% height=5% src="http://{{ip_addr}}:8080/stats"></iframe>
 <!--<script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
 
 <body onload="JavaScript:init('/static/sync.jpg');">
 <canvas id="canvas"/>
 </body>-->
 
-<iframe width=100% height=100% src="http://192.168.4.1:8081/sync_graph.html"></iframe>
+<iframe width=100% height=100% src="http://{{ip_addr}}:8081/sync_graph.html"></iframe>
 
 
 </html>

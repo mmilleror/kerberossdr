@@ -1,6 +1,6 @@
 <html>
 <meta http-equiv="Cache-control" content="no-cache" charset="utf-8">
-<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a> | <a href="/stats">Stats</a></font></p>
+<p><font size = "4"><a href="/init">Configuration and Spectrum</a> | <a href="/sync">Sync</a> | <a href="/doa">DOA Estimation</a> | <a href="/pr">Passive Radar</a></font></p>
 <hr>
 <b>Passive Radar</b>
 <form action="/pr" method="post">
@@ -38,13 +38,14 @@
 
 	<p><input value="Update Paramaters" type="submit" /></p>
 </form>
+<iframe width=100% height=5% src="http://{{ip_addr}}:8080/stats"></iframe>
 <hr>
 <!--<script type="text/javascript" src="/static/refresh_image.js" charset="utf-8" style="float:right"></script>
 <body onload="JavaScript:init('/static/pr.jpg');">
 <canvas id="canvas"/>
 </body>-->
 
-<iframe width=100% height=100% src="http://192.168.4.1:8081/passive_radar.html"></iframe>
+<iframe width=100% height=100% src="http://{{ip_addr}}:8081/passive_radar.html"></iframe>
 
 
 </html>

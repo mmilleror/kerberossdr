@@ -290,8 +290,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set default confiuration for the GUI components
         self.set_default_configuration()
         
-        ip_addr = sys.argv[2]
-        threading.Thread(target=run, kwargs=dict(host=ip_addr, port=8080, quiet=True, debug=True)).start()
+        self.ip_addr = sys.argv[2]
+        threading.Thread(target=run, kwargs=dict(host=self.ip_addr, port=8080, quiet=True, debug=True)).start()
 
     #-----------------------------------------------------------------
     # 
@@ -802,6 +802,7 @@ def pr():
     est_win = form.spinBox_cfar_est_win.value()
     guard_win = form.spinBox_cfar_guard_win.value()
     thresh_det = form.doubleSpinBox_cfar_threshold.value()
+    ip_addr = form.ip_addr
 
     return template ('pr.tpl', {'en_pr':en_pr,
 				'ref_ch':ref_ch,
@@ -815,7 +816,8 @@ def pr():
 				'en_det':en_det,
 				'est_win':est_win,
 				'guard_win':guard_win,
-				'thresh_det':thresh_det})
+				'thresh_det':thresh_det,
+				'ip_addr':ip_addr})
 
 @post('/pr')
 def do_pr():
@@ -872,6 +874,7 @@ def doa():
     en_MEM = form.checkBox_en_DOA_MEM.checkState()
     en_MUSIC = form.checkBox_en_DOA_MUSIC.checkState()
     en_fbavg = form.checkBox_en_DOA_FB_avg.checkState()
+    ip_addr = form.ip_addr
 
     return template ('doa.tpl', {'ant_arrangement_index':ant_arrangement_index,
 				'ant_spacing':ant_spacing,
@@ -880,7 +883,8 @@ def doa():
 				'en_capon':en_capon,
 				'en_MEM':en_MEM,
 				'en_MUSIC':en_MUSIC,
-				'en_fbavg':en_fbavg})
+				'en_fbavg':en_fbavg,
+				'ip_addr':ip_addr})
 
 
 @post('/doa')
@@ -918,8 +922,10 @@ def do_doa():
 def sync():
     en_sync = form.checkBox_en_sync_display.checkState()
     en_noise = form.checkBox_en_noise_source.checkState()
+    ip_addr = form.ip_addr
     return template ('sync.tpl', {'en_sync':en_sync,
-				'en_noise':en_noise})
+				'en_noise':en_noise,
+				'ip_addr':ip_addr})
 
 
 @post('/sync')
@@ -958,6 +964,7 @@ def init():
     filt_bw = form.doubleSpinBox_filterbw.value()
     fir_size = form.spinBox_fir_tap_size.value()
     decimation = form.spinBox_decimation.value()
+    ip_addr = form.ip_addr
 
     return template ('init.tpl', {'center_freq':center_freq, 
 				'samp_index':samp_index, 
@@ -968,7 +975,8 @@ def init():
 				'dc_comp':dc_comp,
 				'filt_bw':filt_bw,
 				'fir_size':fir_size,
-				'decimation':decimation})
+				'decimation':decimation,
+				'ip_addr':ip_addr})
 
 @post('/init') # or @route('/login', method='POST')
 def do_init():

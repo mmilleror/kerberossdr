@@ -75,7 +75,7 @@ int reconfig_trigger=0, exit_flag=0;
 int noise_source_state = 0;
 int last_noise_source_state = 0;
 
-unsigned long long read_buff_ind = 0;
+unsigned long read_buff_ind = 0;
 
 int writeOrder[100][2];
 int writeCount = 0;

@@ -10,7 +10,7 @@ CC=gcc
 #CFLAGS=-Wall -O2 -march=armv7-a -mtune=cortex-a17 -mfpu=neon -mfloat-abi=hard
 
 # For Generic x86
-CFLAGS=-Wall -O2 -march=native
+CFLAGS=-Wall -O3 -march=native
 
 RM= rm -f
 
