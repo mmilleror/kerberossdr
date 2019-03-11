@@ -181,7 +181,7 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
             len = BUFF_LEN;   
         }*/
     
-    	int wr_buff_ind = rtl_rec->buff_ind % NUM_BUFF;
+    	unsigned int wr_buff_ind = rtl_rec->buff_ind % NUM_BUFF;
 
         writeOrder[rtl_rec->dev_ind][0] = rtl_rec->dev_ind;
         writeOrder[rtl_rec->dev_ind][1] = wr_buff_ind;
