@@ -195,7 +195,7 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
     //fprintf(stderr, "[ INFO ] Read at device:%d, buff index:%llu, write index:%d, len:%d\n",rtl_rec->dev_ind, rtl_rec->buff_ind, wr_buff_ind, len);
     	//rtl_rec->buff_ind++;
 
-        //if((rtl_rec->buff_ind - read_buff_ind) == 0)
+        if((rtl_rec->buff_ind - read_buff_ind) == 0)
             rtl_rec->buff_ind = read_buff_ind + 1;
 
     //fprintf(stderr, "Read_buff_ind:%d, rtl_recbuff_ind:%d\n",rtl_rec->buff_ind, rtl_rec->buff_ind);
