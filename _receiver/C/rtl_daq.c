@@ -77,8 +77,8 @@ int last_noise_source_state = 0;
 
 unsigned long read_buff_ind = 0;
 
-int writeOrder[100][2];
-int writeCount = 0;
+unsigned int writeOrder[100][2];
+unsigned int writeCount = 0;
 
 
 void * fifo_read_tf(void* arg)
@@ -175,11 +175,11 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
 
         struct rtl_rec_struct *rtl_rec = (struct rtl_rec_struct *) ctx;// Set the receiver's structure
 
-        if (len != BUFF_LEN)
+        /*if (len != BUFF_LEN)
         {
             fprintf(stderr, "[ DEBUG ] Len greather than BUFF_LEN\n");
             len = BUFF_LEN;   
-        }
+        }*/
     
     	int wr_buff_ind = rtl_rec->buff_ind % NUM_BUFF;
 
@@ -195,7 +195,7 @@ void rtlsdrCallback(unsigned char *buf, uint32_t len, void *ctx)
     //fprintf(stderr, "[ INFO ] Read at device:%d, buff index:%llu, write index:%d, len:%d\n",rtl_rec->dev_ind, rtl_rec->buff_ind, wr_buff_ind, len);
     	//rtl_rec->buff_ind++;
 
-        if((rtl_rec->buff_ind - read_buff_ind) == 0)
+        //if((rtl_rec->buff_ind - read_buff_ind) == 0)
             rtl_rec->buff_ind = read_buff_ind + 1;
 
     //fprintf(stderr, "Read_buff_ind:%d, rtl_recbuff_ind:%d\n",rtl_rec->buff_ind, rtl_rec->buff_ind);

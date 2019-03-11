@@ -291,7 +291,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_default_configuration()
         
         self.ip_addr = sys.argv[2]
-        threading.Thread(target=run, kwargs=dict(host=self.ip_addr, port=8080, quiet=True, debug=True)).start()
+        threading.Thread(target=run, kwargs=dict(host=self.ip_addr, port=8080, quiet=True, debug=False, server='cherrypy')).start()
 
     #-----------------------------------------------------------------
     # 
